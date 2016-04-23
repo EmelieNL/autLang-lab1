@@ -17,4 +17,8 @@ public class State {
 	public int getStateID(){
 		return stateID;
 	}
+	
+	@Override public String toString() {
+		return new Integer(stateID).toString();
+	}
 }

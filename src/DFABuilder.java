@@ -1,43 +1,38 @@
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-
 
 
 public class DFABuilder {
 	
 	Automata eNFA = new Automata();
+	private static boolean DEBUG = true; 
 	
 	public DFABuilder() throws Exception{
-		REParser parser = new REParser();
-
-		RegExp regex = parser.parse("aa");
 		
-
-		System.out.println(regex);
+		//REParser parser = new REParser();
+		RegExp regex = REParser.parse("aa");	
+		
 		State startState = new State();
 		eNFA.addStartState(startState);
 		
 		State finalState = nextRegex(regex.getClass().getName(), regex, startState);
 		eNFA.addFinalState(finalState);
-		printNFA();
-		
-		
+		eNFA.printAutomataInfo();		
 	}
 
 	private State nextRegex(String regexOperator, RegExp regex, State previousFinal){
-		System.out.println("nextRegex!");
+		if (DEBUG) System.out.println("Next to parse: " + regexOperator);
 		switch (regex.getClass().getName()){
 
 		case "Concatenation":
 			Concatenation con = (Concatenation) regex;
-			System.out.println(con.getR1());
+			
+			if (DEBUG) System.out.println("R1: " + con.getR1());
 			RegExp r1 = con.getR1();
 			State r1InitialState = new State();
 			Epsilon e = new Epsilon();
-			eNFA.addTransition(e, previousFinal, r1InitialState);
-			
+			eNFA.addTransition(e, previousFinal, r1InitialState);			
 			State finalR1State = nextRegex(r1.getClass().getName(), r1, r1InitialState);
+			
+			if (DEBUG) System.out.println("R1: " + con.getR1());
 			Epsilon e2 = new Epsilon();
 			State r2StartState = new State();
 			eNFA.addTransition(e2, finalR1State, r2StartState);
@@ -63,22 +58,7 @@ public class DFABuilder {
 		case "ZeroOrOne":
 
 		case "Dot":
-
-		}
-		
+		}		
 		return null;
 	}
-	
-	private void printNFA() {
-		HashSet<State> states = eNFA.getStates();
-		System.out.println("Initial state: " + eNFA.getInitialState().stateID);
-		System.out.println("Numer of states: " + states.size());
-		
-		for (State s: states) {
-			System.out.println("State: " + s.stateID);
-		}
-		//System.out.println("Final states: " + eNFA.getFinalsState());
-	}
-	
-	
 }
