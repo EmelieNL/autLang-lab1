@@ -5,7 +5,7 @@ import java.util.Map;
 
 
 public class Automata {
-	
+	kjfkdsa
 	//states, Alphabet , TransistionFunctions, startState, endState  
 	HashSet<State> states = new HashSet<State>();
 	HashSet<State> finalStates = new HashSet<State>();
