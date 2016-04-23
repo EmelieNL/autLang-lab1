@@ -5,7 +5,6 @@ import java.util.Map;
 
 
 public class Automata {
-	kjfkdsa
 	//states, Alphabet , TransistionFunctions, startState, endState  
 	HashSet<State> states = new HashSet<State>();
 	HashSet<State> finalStates = new HashSet<State>();
@@ -19,10 +18,12 @@ public class Automata {
 	
 	public void addStartState(State start){
 		initialState = start;
+		addState(start);
 	}
 	
 	public void addFinalState(State finalState){
 		finalStates.add(finalState);
+		addState(finalState);
 	}
 	
 	public void addState(State state){
@@ -46,18 +47,17 @@ public class Automata {
 	}
 	
 	public void addTransition(Object transObj, State from, State to){
-		//if(transisitions.))
-		System.out.println("inne i addTRans");
+		if(!states.contains(to)){
+			states.add(to);
+		}
 		if (transitions.get(from) == null){
-			System.out.println("inne i addTRans2");
 			HashSet<State> neighbours = new HashSet<State>();
 			Map<Object,HashSet<State>> transes = new HashMap<Object, HashSet<State>>();
 			transes.put(transObj, neighbours);
 			transitions.put(from, transes);
-			System.out.println("inne i addTRans3");
 			
 		}
-		System.out.println("inne i addTRans4");
+
 		Map a= transitions.get(from);
 		a.put(transObj, to);
 

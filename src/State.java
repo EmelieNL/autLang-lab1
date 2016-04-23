@@ -7,7 +7,7 @@ public class State {
 	
 	public State(){
 		this.stateID = currentStateID;
-		stateID++;
+		currentStateID++;
 	}
 
 	public int getNrOfState(){

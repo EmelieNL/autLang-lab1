@@ -33,16 +33,16 @@ public class DFABuilder {
 			Concatenation con = (Concatenation) regex;
 			System.out.println(con.getR1());
 			RegExp r1 = con.getR1();
-			State r1State = new State();
+			State r1InitialState = new State();
 			Epsilon e = new Epsilon();
-			eNFA.addTransition(e, previousFinal, r1State);
+			eNFA.addTransition(e, previousFinal, r1InitialState);
 			
-			State finalR1State = nextRegex(r1.getClass().getName(), r1, r1State);
+			State finalR1State = nextRegex(r1.getClass().getName(), r1, r1InitialState);
 			Epsilon e2 = new Epsilon();
 			State r2StartState = new State();
 			eNFA.addTransition(e2, finalR1State, r2StartState);
 			RegExp r2 = con.getR2();
-			State finalR2State = nextRegex(r2.getClass().getName(), r2, r1State);
+			State finalR2State = nextRegex(r2.getClass().getName(), r2, r2StartState);
 			return finalR2State;
 
 		case "Union":
