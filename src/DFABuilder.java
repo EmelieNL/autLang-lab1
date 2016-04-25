@@ -8,7 +8,7 @@ public class DFABuilder {
 	public DFABuilder() throws Exception{
 		
 		//REParser parser = new REParser();
-		RegExp regex = REParser.parse("aa");	
+		RegExp regex = REParser.parse("aabb");	
 		
 		State startState = new State();
 		eNFA.addStartState(startState);
@@ -27,12 +27,14 @@ public class DFABuilder {
 			
 			if (DEBUG) System.out.println("R1: " + con.getR1());
 			RegExp r1 = con.getR1();
+			/*
 			State r1InitialState = new State();
 			Epsilon e = new Epsilon();
-			eNFA.addTransition(e, previousFinal, r1InitialState);			
-			State finalR1State = nextRegex(r1.getClass().getName(), r1, r1InitialState);
+			eNFA.addTransition(e, previousFinal, r1InitialState);
+			*/			
+			State finalR1State = nextRegex(r1.getClass().getName(), r1, previousFinal);
 			
-			if (DEBUG) System.out.println("R1: " + con.getR1());
+			if (DEBUG) System.out.println("R2: " + con.getR2());
 			Epsilon e2 = new Epsilon();
 			State r2StartState = new State();
 			eNFA.addTransition(e2, finalR1State, r2StartState);
@@ -46,11 +48,13 @@ public class DFABuilder {
 
 		case "Litteral":
 			Litteral litt = (Litteral) regex;
+			/*
 			State littState = new State();
 			Epsilon eLitt = new Epsilon();
 			eNFA.addTransition(eLitt, previousFinal, littState);
+			*/
 			State littFinal = new State();
-			eNFA.addTransition(litt, littState, littFinal);
+			eNFA.addTransition(litt, previousFinal, littFinal); //littState was changed to previousFinal
 			return littFinal;
 
 		case "OneOreMore":
