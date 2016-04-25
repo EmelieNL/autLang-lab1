@@ -7,7 +7,7 @@ public class DFABuilder {
 	
 	public DFABuilder() throws Exception{
 		
-		RegExp regex = REParser.parse("aa|b");	
+		RegExp regex = REParser.parse("ab*");	
 		
 		State startState = new State();
 		eNFA.addStartState(startState);
@@ -60,6 +60,19 @@ public class DFABuilder {
 			return finalUnionState;
 
 		case "Closure":
+			Closure clos = (Closure) regex;
+			RegExp closR1 = clos.r;
+			State closInitial = new State();
+			Epsilon e5 = new Epsilon();
+			eNFA.addTransition(e5, previousFinal, closInitial);
+			
+			State automataFinal = nextRegex(closR1.getClass().getName(), closR1, closInitial);
+			
+			State finalClosureState = new State();
+			Epsilon e6 = new Epsilon(); Epsilon e7 = new Epsilon();
+			eNFA.addTransition(e6, previousFinal, finalClosureState);
+			eNFA.addTransition(e7, automataFinal, finalClosureState);
+			return finalClosureState;
 
 		case "Litteral":
 			Litteral litt = (Litteral) regex;
@@ -68,6 +81,7 @@ public class DFABuilder {
 			return littFinal;
 
 		case "OneOreMore":
+			
 
 		case "ZeroOrOne":
 
