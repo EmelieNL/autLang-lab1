@@ -69,9 +69,10 @@ public class DFABuilder {
 			State automataFinal = nextRegex(closR1.getClass().getName(), closR1, closInitial);
 			
 			State finalClosureState = new State();
-			Epsilon e6 = new Epsilon(); Epsilon e7 = new Epsilon();
+			Epsilon e6 = new Epsilon(); Epsilon e7 = new Epsilon(); Epsilon e8 = new Epsilon();
 			eNFA.addTransition(e6, previousFinal, finalClosureState);
 			eNFA.addTransition(e7, automataFinal, finalClosureState);
+			eNFA.addTransition(e8, automataFinal, closInitial);
 			return finalClosureState;
 
 		case "Litteral":
@@ -81,7 +82,16 @@ public class DFABuilder {
 			return littFinal;
 
 		case "OneOreMore":
+			OneOrMore oOreMore = (OneOrMore) regex;
+			RegExp oneR1 = oOreMore.r;
 			
+			State oneR1Final= nextRegex(oneR1.getClass().getName(), oneR1, previousFinal);
+			
+			State oneOrMoreFinal = new State();
+			Epsilon e9 = new Epsilon(); Epsilon e10 = new Epsilon();
+			eNFA.addTransition(e9, oneR1Final, oneOrMoreFinal);
+			eNFA.addTransition(e10, oneR1Final, previousFinal);
+			return oneOrMoreFinal;
 
 		case "ZeroOrOne":
 
