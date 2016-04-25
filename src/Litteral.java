@@ -4,7 +4,7 @@ public class Litteral extends RegExp {
     public final Character c;
     public Litteral(Character c) {
         this.c = c;
-        //hejFrom();
+        hejFrom();
     }
     
     public Character getLitteral(){
@@ -14,4 +14,5 @@ public class Litteral extends RegExp {
 	@Override public String toString() {
 		return c.toString();
 	}
+	
 }

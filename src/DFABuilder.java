@@ -7,8 +7,7 @@ public class DFABuilder {
 	
 	public DFABuilder() throws Exception{
 		
-		//REParser parser = new REParser();
-		RegExp regex = REParser.parse("aabb");	
+		RegExp regex = REParser.parse("aa|b");	
 		
 		State startState = new State();
 		eNFA.addStartState(startState);
@@ -26,33 +25,44 @@ public class DFABuilder {
 			Concatenation con = (Concatenation) regex;
 			
 			if (DEBUG) System.out.println("R1: " + con.getR1());
-			RegExp r1 = con.getR1();
-			/*
-			State r1InitialState = new State();
-			Epsilon e = new Epsilon();
-			eNFA.addTransition(e, previousFinal, r1InitialState);
-			*/			
+			RegExp r1 = con.getR1();		
 			State finalR1State = nextRegex(r1.getClass().getName(), r1, previousFinal);
 			
 			if (DEBUG) System.out.println("R2: " + con.getR2());
-			Epsilon e2 = new Epsilon();
+			Epsilon e = new Epsilon();
 			State r2StartState = new State();
-			eNFA.addTransition(e2, finalR1State, r2StartState);
+			eNFA.addTransition(e, finalR1State, r2StartState);
 			RegExp r2 = con.getR2();
 			State finalR2State = nextRegex(r2.getClass().getName(), r2, r2StartState);
 			return finalR2State;
 
 		case "Union":
+			Union un = (Union) regex;
+			RegExp r1Union = un.r1; RegExp r2Union = un.r2;
+			
+			//create initial state for r1 and add edge 
+			State initialR1UnionState = new State();
+			Epsilon e1 = new Epsilon();
+			eNFA.addTransition(e1, previousFinal, initialR1UnionState);
+			State finalR1Union = nextRegex(r1Union.getClass().getName(), r1Union, initialR1UnionState);
+			//same as above for r2
+			State initialR2UnionState = new State();
+			Epsilon e2 = new Epsilon();
+			eNFA.addTransition(e2, previousFinal, initialR2UnionState);
+			State finalR2Union = nextRegex(r2Union.getClass().getName(), r2Union, initialR2UnionState);
+			
+			//connect the two final states (in each automata above) to a single final state for the whole union
+			State finalUnionState = new State();
+			Epsilon e3 = new Epsilon();
+			Epsilon e4 = new Epsilon();
+			eNFA.addTransition(e3, finalR1Union, finalUnionState);
+			eNFA.addTransition(e4, finalR2Union, finalUnionState);
+			return finalUnionState;
 
 		case "Closure":
 
 		case "Litteral":
 			Litteral litt = (Litteral) regex;
-			/*
-			State littState = new State();
-			Epsilon eLitt = new Epsilon();
-			eNFA.addTransition(eLitt, previousFinal, littState);
-			*/
 			State littFinal = new State();
 			eNFA.addTransition(litt, previousFinal, littFinal); //littState was changed to previousFinal
 			return littFinal;

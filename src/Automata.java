@@ -54,10 +54,12 @@ public class Automata {
 			transes.put(transObj, neighbours);
 			transitions.put(from, transes);
 		}
-		Map<Object, HashSet<State>> toStates = transitions.get(from);
-		toStates.get(transObj).add(to);
-		//		Map a= transitions.get(from);
-		//		a.put(transObj, to);
+		//NEEDED because of UNION where previousFinal already in transitions but no hashSet for new transObj
+		if(transitions.containsKey(from) && !transitions.get(from).containsKey(transObj)){
+			transitions.get(from).put(transObj, new HashSet<State>());
+		}
+		
+		transitions.get(from).get(transObj).add(to);
 	}
 
 	public void printAutomataInfo() {
