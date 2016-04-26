@@ -1,5 +1,9 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 public class Automata {
@@ -77,9 +81,15 @@ public class Automata {
 			System.out.print(f.stateID + ", ");
 		}
 		System.out.println(" }");
+		
+		/*
+		 * Sorting states for better output
+		 */
+		List<State> sortedStates = new ArrayList<State>(states);
+		Collections.sort(sortedStates); 
 
 		System.out.println("Transitions: ");
-		for (State from : states) {
+		for (State from : sortedStates) {
 			if (transitions.containsKey(from)) {
 				Map<Object, HashSet<State>> possibleTrans = transitions.get(from);
 				for (Map.Entry<Object, HashSet<State>> entry : possibleTrans.entrySet()) {

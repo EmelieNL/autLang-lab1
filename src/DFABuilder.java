@@ -7,12 +7,12 @@ public class DFABuilder {
 	
 	public DFABuilder() throws Exception{
 		
-		RegExp regex = REParser.parse("ab*");	
+		RegExp regex = REParser.parse("a+b?(cc)*");	
 		
 		State startState = new State();
 		eNFA.addStartState(startState);
-		
 		State finalState = nextRegex(regex.getClass().getName(), regex, startState);
+
 		eNFA.addFinalState(finalState);
 		eNFA.printAutomataInfo();		
 	}
@@ -78,12 +78,12 @@ public class DFABuilder {
 		case "Litteral":
 			Litteral litt = (Litteral) regex;
 			State littFinal = new State();
-			eNFA.addTransition(litt, previousFinal, littFinal); //littState was changed to previousFinal
+			eNFA.addTransition(litt, previousFinal, littFinal);
 			return littFinal;
 
-		case "OneOreMore":
-			OneOrMore oOreMore = (OneOrMore) regex;
-			RegExp oneR1 = oOreMore.r;
+		case "OneOrMore":
+			OneOrMore oOrMore = (OneOrMore) regex;
+			RegExp oneR1 = oOrMore.r;
 			
 			State oneR1Final= nextRegex(oneR1.getClass().getName(), oneR1, previousFinal);
 			
@@ -94,8 +94,20 @@ public class DFABuilder {
 			return oneOrMoreFinal;
 
 		case "ZeroOrOne":
+			ZeroOrOne zOrOne = (ZeroOrOne) regex;
+			RegExp z1 = zOrOne.r;
+			
+			Epsilon e12 = new Epsilon();
+			State z1Final = nextRegex(z1.getClass().getName(), z1, previousFinal);
+			
+			State zOrOneFinal = new State();
+			Epsilon e13 = new Epsilon();
+			eNFA.addTransition(e12, previousFinal, zOrOneFinal);
+			eNFA.addTransition(e13, z1Final, zOrOneFinal);
+			return zOrOneFinal;
 
 		case "Dot":
+			
 		}		
 		return null;
 	}

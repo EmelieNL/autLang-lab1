@@ -1,5 +1,5 @@
 
-public class State {
+public class State implements Comparable<State>{
 	
 	public static int currentStateID = 0;
 	int stateID;
@@ -20,6 +20,14 @@ public class State {
 	
 	@Override public String toString() {
 		return new Integer(stateID).toString();
+	}
+
+	@Override
+	public int compareTo(State state) {
+		if(this.stateID < state.getStateID()){
+			return -1;
+		}
+		return 0;
 	}
 	
 }
