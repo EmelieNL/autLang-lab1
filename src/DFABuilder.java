@@ -1,13 +1,16 @@
+import java.util.HashSet;
+
 
 
 public class DFABuilder {
 	
 	Automata eNFA = new Automata();
+	Automata DFA = new Automata();
 	private static boolean DEBUG = true; 
 	
 	public DFABuilder() throws Exception{
 		
-		RegExp regex = REParser.parse("ab");	
+		RegExp regex = REParser.parse("a*?");	
 		
 		State startState = new State();
 		eNFA.addStartState(startState);
@@ -15,6 +18,7 @@ public class DFABuilder {
 
 		eNFA.addFinalState(finalState);
 		eNFA.printAutomataInfo();		
+		convertToDFA();
 	}
 
 	private State nextRegex(String regexOperator, RegExp regex, State previousFinal){
@@ -116,7 +120,10 @@ public class DFABuilder {
 	}
 	
 	private void convertToDFA(){
-		
-		
+		State initialNFAstate = eNFA.getInitialState();
+		if(eCloseInitial == null)System.out.println("fsf");
+		for(State s : eCloseInitial){
+			System.out.println(s);
+		}
 	}
 }
