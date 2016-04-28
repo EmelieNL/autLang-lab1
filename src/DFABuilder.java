@@ -7,7 +7,7 @@ public class DFABuilder {
 	
 	public DFABuilder() throws Exception{
 		
-		RegExp regex = REParser.parse("a+b?(cc)*");	
+		RegExp regex = REParser.parse("ab");	
 		
 		State startState = new State();
 		eNFA.addStartState(startState);
@@ -107,8 +107,16 @@ public class DFABuilder {
 			return zOrOneFinal;
 
 		case "Dot":
-			
+			State finalDottState = new State();
+			Epsilon e14 = new Epsilon();
+			eNFA.addTransition(e14, previousFinal, finalDottState);
+			return finalDottState;
 		}		
 		return null;
+	}
+	
+	private void convertToDFA(){
+		
+		
 	}
 }
